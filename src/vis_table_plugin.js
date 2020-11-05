@@ -1156,7 +1156,9 @@ class VisPluginTableModel {
       for (var t = 0; t < tiers.length; t++) {
         var tier = tiers[t]
         var this_tier_value = leaf.data[tier.name].value
-        var neighbour_value = l > 0 ? leaves[l - 1].data[tier.name].value : null
+        // Fix for subtotals on top
+        var neighbour = leaves[l - 1];
+        var neighbour_value = l > 0 && neighbour.type === 'line_item' ? leaves[l - 1].data[tier.name].value : null
 
         // Match: mark invisible (span_value = -1). Increment the span_tracker.
         if (l > 0 && this_tier_value === neighbour_value) {
@@ -1306,7 +1308,8 @@ class VisPluginTableModel {
           }
         }
       })
-      subtotalRow.sort = [0, s, 9999]
+      // Change sort order to bring subtotals to top
+      subtotalRow.sort = [0, s, -9999]
       this.data.push(subtotalRow)
     })
     this.sortData()
