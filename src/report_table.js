@@ -457,10 +457,10 @@ looker.plugins.visualizations.add({
 
     this.clearErrors();
 
-    if (queryResponse.fields.pivots.length > 3) {
+    if (queryResponse.fields.pivots.length > 5) {
       this.addError({
-        title: 'Max Two Pivots',
-        message: 'This visualization accepts no more than 3 pivot fields.'
+        title: 'Max Five Pivots',
+        message: 'This visualization accepts no more than 5 pivot fields.'
       });
       return
     }
