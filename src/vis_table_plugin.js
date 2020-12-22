@@ -212,6 +212,7 @@ class VisPluginTableModel {
    * @param {*} config 
    */
   constructor(lookerData, queryResponse, config) {
+    console.log(lookerData, queryResponse, config)
     this.visId = 'report_table'
     this.config = config
 
@@ -274,7 +275,7 @@ class VisPluginTableModel {
     if (this.hasTotals) { this.buildTotals(queryResponse) }
     if (this.spanRows) { this.setRowSpans() }
     if (this.addRowSubtotals) { this.addSubTotals() }
-    if (this.addColSubtotals && this.pivot_fields.length === 2) { this.addColumnSubTotals() }
+    if (this.addColSubtotals && this.pivot_fields.length >= 2) { this.addColumnSubTotals() }
     if (this.variances) { this.addVarianceColumns() }
 
     // this.addColumnSeries()    // TODO: add column series for generated columns (eg column subtotals)
@@ -530,6 +531,10 @@ class VisPluginTableModel {
         switch (header.type) {
           case 'pivot0':
           case 'pivot1':
+          case 'pivot2':
+          case 'pivot3':
+          case 'pivot4':
+          case 'pivot5':
             var pivotField = new ModelPivot({ vis: this, queryResponseField: header.modelField })
             var headerCell = new HeaderCell({ column: column, type: header.type, modelField: pivotField })
             headerCell.label = '' // TODO: Decide how (if) it makes sense to add pivot labels at top of dimension columns
@@ -611,6 +616,10 @@ class VisPluginTableModel {
               switch (header.type) {
                 case 'pivot0':
                 case 'pivot1':
+                case 'pivot2':
+                case 'pivot3':
+                case 'pivot4':
+                case 'pivot5':
                   var label = isRowTotal ? '' : pivot_value.metadata[header.modelField.name].rendered || pivot_value.metadata[header.modelField.name].value
                   if (isRowTotal && header.type.startsWith('pivot') && header.type === 'pivot' + (this.pivot_fields.length - 1)) {
                     label = 'Row Total'
@@ -705,6 +714,10 @@ class VisPluginTableModel {
           switch (header.type) {
             case 'pivot0':
             case 'pivot1':
+            case 'pivot2':
+            case 'pivot3':
+            case 'pivot4':
+            case 'pivot5':
               column.levels.push(new HeaderCell({ column: column, type: header.type, modelField: { label: '' } }))
               column.sort.push(1)
               break
@@ -799,6 +812,10 @@ class VisPluginTableModel {
       switch (header.type) {
         case 'pivot0':
         case 'pivot1':
+        case 'pivot2':
+        case 'pivot3':
+        case 'pivot4':
+        case 'pivot5':
           var pivotField = new ModelPivot({ vis: this, queryResponseField: header.modelField })
           var headerCell = new HeaderCell({ column: column, type: header.type, modelField: pivotField })
           headerCell.label = ''  // TODO: Decide how (if) it makes sense to add pivot labels at top of dimension columns
@@ -1391,6 +1408,10 @@ class VisPluginTableModel {
             break
 
           case 'pivot1':
+          case 'pivot2':
+          case 'pivot3':
+          case 'pivot4':
+          case 'pivot5':
             subtotalColumn.levels.push(new HeaderCell({ column: subtotalColumn, type: header.type, modelField: {
               name: 'subtotal',
               label: 'Subtotal',
@@ -1531,6 +1552,10 @@ class VisPluginTableModel {
       switch (header.type) {
         case 'pivot0':
         case 'pivot1':
+        case 'pivot2':
+        case 'pivot3':
+        case 'pivot4':
+        case 'pivot5':
           var label = baseline.getHeaderCellLabelByType(header.type)
           if (this.groupVarianceColumns && header.type === 'pivot0') {
             var label = this.pivot_values.length === 2 ? 'Variance' : 'Variance: ' + label
@@ -1723,6 +1748,8 @@ class VisPluginTableModel {
       span_tracker[tier.type] = 1
     })
 
+    console.log(leaves, tiers)
+
     // 3)
     for (var l = leaves.length - 1; l >= 0; l--) {
       var leaf = leaves[l]
@@ -1877,6 +1904,10 @@ class VisPluginTableModel {
         switch (level.type) {
           case 'pivot0':
           case 'pivot1':
+          case 'pivot2':
+          case 'pivot3':
+          case 'pivot4':
+          case 'pivot5':
             cell.cell_style.push('pivot')
             break
           case 'heading':
