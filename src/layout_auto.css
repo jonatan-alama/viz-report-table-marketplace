@@ -18,3 +18,13 @@ table.reportTable {
 table.reportTable.reveal {
   opacity: 1;
 }
+
+table.reportTable th {
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+table.reportTable td {
+  word-break: keep-all;
+  white-space: normal;
+}	
